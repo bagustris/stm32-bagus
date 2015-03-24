@@ -1,0 +1,47 @@
+Step-by-step Contoh program untuk stm32-tf
+Repo >> https://github.com/mekatronik-achmadi/stm32-tf
+
+sudo apt-get install libnewlib-arm-none-eabi libnewlib-dev gcc-arm-none-eabi libftdi-dev libusb-1.0.0-dev
+
+Flash (stm32-tf/tools/linux/stm32flash-stm32flash)
+1. Pindah ke directory stm32flash
+2. sudo make
+3. sudo make install
+
+Membuat program:
+1. Copy file main.c, Makefile, halconf.h dan mcuconf.h dalam satu folder
+2. Edit Makefile baris ke-58, rename coba1 dengan nama project/folder anda
+3. Tulis program utama anda dalam file main.c
+
+Mengupload program (jumper mode programming):
+1. $make
+2. $sudo stm32flash -w ./build/coba2.bin -v -b 115200 /dev/ttyUSB0 
+3. Pindahkan jumper ke mode running dan reset
+
+Print LCD dengan qtserialterminal
+Sebelum mengakses (print) ke LCD, file program lcd sudah harus di compile dan diupload ke STM 32 (Sesuai dengan perintah compile dan upload sebelumnya)
+1. sudo xhost +
+2. sudo ./qtserialterminal
+3. Open port /dev/ttyUSB0, Sesuaikan baudrate-nya
+4. Gunakan perintah "lcd 0 tes" untuk mencetak 'tes' pada baris atas dan "lcd 1 OK" untuk mencerak 'OK' pada baris bawah
+5. Print text ke lcd juga bisa dijalankan dari terminal biasa (gnometerm):
+echo -e "lcd 0 coba\r" > /dev/ttyUSB0
+
+
+Note:
+make link
+$ sudo ln -svf /lib/i386-linux-gnu/libudev.so.1 /lib/i386-linux-gnu/libudev.so
+install libqtserialport
+sudo apt-get install libqt5serialport5-dev
+cek
+bta@g580:qtserialterminal$ sudo stm32flash /dev/ttyUSB0 
+Solve warning :
+Gtk-WARNING **: cannot open display: :0.0
+xhost +
+
+$ ldd --verbose -ludev
+usernamenya : D3LogIns / djank.logins@gmail.com password : terserahd3
+File coba1: https://github.com/bagustris/stm32-bagus/tree/master/firmware/coba/coba1
+
+Setelah code di upload, jumper dipindah ke mode running dan di-reset
+
